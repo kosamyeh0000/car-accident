@@ -1,3 +1,5 @@
+##去下載最新的Releases
+
 ## 若有NV的GPU先安裝CUDA 版本的 PyTorch
 ```python
 pip install torch torchvision --index-url https://download.pytorch.org/whl/cu126
