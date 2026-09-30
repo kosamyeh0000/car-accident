@@ -6,3 +6,9 @@ pip install torch torchvision --index-url https://download.pytorch.org/whl/cu126
 ```python
 pip install -r requirements.txt
 ```
+
+### 將weights和影片下載放到專案目錄下就可以開始分析
+
+```python
+https://drive.google.com/drive/folders/1zHFWyQWeBPKNe2DJwsGretNGgv2giDZL
+```
