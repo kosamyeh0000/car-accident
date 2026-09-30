@@ -2,7 +2,7 @@ import cv2
 from ultralytics import YOLO
 
 # 1. 載入模型權重
-MODEL_PATH = "F:/py/runs/detect/train-5/weights/best.pt"
+MODEL_PATH = "weights/best.pt"
 print(f"載入模型：{MODEL_PATH} ...")
 model = YOLO(MODEL_PATH)
 
