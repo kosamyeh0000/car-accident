@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>手機鏡頭串流</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background: #111; color: #fff; margin: 0; padding: 20px; }
+        #preview { width: 100%; max-width: 400px; border: 3px solid #2ed573; border-radius: 8px; background: #000; }
+        .status { margin: 15px 0; color: #2ed573; font-size: 16px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h2>手機鏡頭測試頁面</h2>
+    <div class="status" id="statusText">狀態：載入中...</div>
+    
+    <video id="video" autoplay playsinline muted style="display:none;"></video>
+    <canvas id="canvas" style="display:none;"></canvas>
+    
+    <div>
+        <img id="preview" alt="預覽畫面">
+    </div>
+
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const preview = document.getElementById('preview');
+        const statusText = document.getElementById('statusText');
+
+        async function init() {
+            try {
+                statusText.innerText = "請求相機權限...";
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { width: 480, height: 640 }, 
+                    audio: false 
+                });
+                video.srcObject = stream;
+                await video.play();
+                canvas.width = 480;
+                canvas.height = 640;
+                statusText.innerText = "相機運行中！";
+
+                setInterval(() => {
+                    if (video.readyState === video.HAVE_ENOUGH_DATA) {
+                        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                        const dataUrl = canvas.toDataURL('image/jpeg', 0.4);
+                        preview.src = dataUrl;
+
+                        fetch('/upload_frame', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'text/plain' },
+                            body: dataUrl
+                        }).catch(err => console.log(err));
+                    }
+                }, 150);
+
+            } catch (err) {
+                statusText.style.color = "#ff4757";
+                statusText.innerText = "錯誤: " + err.message;
+                alert("相機錯誤: " + err.message);
+            }
+        }
+
+        init();
+    </script>
+</body>
+</html>

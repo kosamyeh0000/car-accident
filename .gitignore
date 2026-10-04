@@ -5,3 +5,6 @@ dataset/
 *.pt
 __pycache__/
 runs/
+cert.pem
+key.pem
+.venv/

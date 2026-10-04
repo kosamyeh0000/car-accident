@@ -31,7 +31,7 @@ while cap.isOpened():
             break
 
         # 執行推論
-        results = model.predict(frame, conf=0.5, verbose=False)
+        results = model.predict(frame, conf=0.5, verbose=False, device="0")
         display_frame = frame.copy()
 
         if results[0].boxes:
